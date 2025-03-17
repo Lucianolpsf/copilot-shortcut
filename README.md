@@ -15,7 +15,7 @@ Provide a simple solution to manage the startup and shutdown of **Copilot Deskto
 Before using the script, make sure you have the necessary dependencies installed on your system. You can install them with the following command:
 
 ```bash
-sudo apt update && sudo apt install -y pgrep wmctrl xdotool git
+sudo apt update && sudo apt install make -y
 ```
 
 Additionally, ensure that **Copilot Desktop** is installed via Snap:
@@ -34,26 +34,18 @@ These packages are required for process management and window manipulation, ensu
    cd copilot-shortcut
    ```
 
-2. **Grant execution permission to the script:**
+2. **Execute the instrution to install shortcut:**
    ```bash
-   chmod +x copilot-shortcut.sh
+   make install
+
+3. **Execute the instrution to uninstall shortcut:**
+   ```bash
+   make uninstall
    ```
 
-3. **Set up a shortcut on your system:**
-   - On **GNOME** (Ubuntu):
-     1. Open `Settings` > `Keyboard` > `Shortcuts`.
-     2. Click on **Add Custom Shortcut**.
-     3. In the **Name** field, enter `Copilot Shortcut`.
-     4. In the **Command** field, enter the path to the script:
-        ```
-        /path/to/copilot-shortcut.sh
-        ```
-     5. Choose a key combination (e.g., `Ctrl + Alt + C`).
-     6. Save and test the shortcut.
-
 ## 🛠️ Usage
-- **To open Copilot Desktop**, press the configured shortcut.
-- **To close the application**, press the same shortcut again (if the script includes this functionality).
+- **To open Copilot Desktop**, press the configured shortcut `ALT+space`.
+- **To close the application**, press the same shortcut again.
 
 ## 🔧 Customization
 If you want to modify the script's behavior, edit the `copilot-shortcut.sh` file and adjust the commands as needed.
