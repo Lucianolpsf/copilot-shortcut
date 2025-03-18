@@ -16,15 +16,22 @@ IFS=',' read -r -a CAMINHOS <<< "$KEY_PATH"
 for CAMINHO in "${CAMINHOS[@]}"; do
 
     CAMINHO=$(echo "$CAMINHO" | xargs)
+
+    # Ensure the path starts with a slash
+    if [[ ! "$CAMINHO" =~ ^/ ]]; then
+        CAMINHO="/$CAMINHO"
+    fi
     
     CAMINHO_NAME="${CAMINHO}/name"
     
     CAMINHO_NAME=$(echo "$CAMINHO_NAME" | sed 's|//|/|g')
-    
+
+    CAMINHO_NAME=$(echo "$CAMINHO_NAME" | sed 's/,//g')
+
     NOME_ATUAL=$(dconf read "$CAMINHO_NAME")
     
     if [[ "$NOME_ATUAL" == "'$SHORTCUT_NAME'" ]]; then
-        echo "The shortcut  '$SHORTCUT_NAME' jalready exists."
+        echo "The shortcut  '$SHORTCUT_NAME' already exists."
         echo "Press Alt+space to activate the shortcut."
         exit 0
     fi
