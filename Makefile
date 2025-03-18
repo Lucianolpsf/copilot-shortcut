@@ -18,7 +18,7 @@ install_shortcut:
 create_shortcut:
 	sudo chmod 777 add-shortcut.sh
 	clear
-	./add-shortcut.sh
+	bash ./add-shortcut.sh
 
 # Default target
 install: install_dependencies install_shortcut create_shortcut
@@ -28,4 +28,4 @@ uninstall:
 	sudo rm -rf $(INSTALL_DIR)
 	sudo chmod 777 remove-shortcut.sh
 	clear
-	./remove-shortcut.sh
+	bash ./remove-shortcut.sh

@@ -15,7 +15,7 @@ Provide a simple solution to manage the startup and shutdown of **Copilot Deskto
 Before using the script, make sure you have the necessary dependencies installed on your system. You can install them with the following command:
 
 ```bash
-sudo apt update && sudo apt install make -y
+sudo apt update && sudo apt install make git -y
 ```
 
 Additionally, ensure that **Copilot Desktop** is installed via Snap:
@@ -37,7 +37,7 @@ These packages are required for process management and window manipulation, ensu
 2. **Execute the instrution to install shortcut:**
    ```bash
    make install
-
+   ```
 3. **Execute the instrution to uninstall shortcut:**
    ```bash
    make uninstall
