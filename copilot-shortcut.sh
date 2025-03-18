@@ -32,10 +32,28 @@ else
     WINDOW_CODE=$(xdotool search --name "$WINDOW_NAME")
 fi
 
+SCREEN_WIDTH=$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)
+SCREEN_HEIGHT=$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)
+
+DOCK_HEIGHT=$(xprop "-root" _NET_WORKAREA | awk '{print $4}' | sed 's/,//g')
+WORKAREA_HEIGHT=$(( $SCREEN_HEIGHT - $DOCK_HEIGHT ))
+
+WINDOW_GEOMETRY=$(xdotool getwindowgeometry --shell "$WINDOW_CODE")
+# WINDOW_WIDTH=$(echo "$WINDOW_GEOMETRY" | grep WIDTH | cut -d '=' -f2)
+# WINDOW_HEIGHT=$(echo "$WINDOW_GEOMETRY" | grep HEIGHT | cut -d '=' -f2)
+
+NEW_WIDTH=800
+NEW_HEIGHT=600
+xdotool windowsize "$WINDOW_CODE" $NEW_WIDTH $NEW_HEIGHT
+
+NEW_X=$(( ($SCREEN_WIDTH - $NEW_WIDTH) / 2 ))
+NEW_Y=$(( $SCREEN_HEIGHT - $NEW_HEIGHT - $DOCK_HEIGHT - 20))
+
 
 if wmctrl -l | grep -i "$WINDOW_NAME" > /dev/null 2>&1; then
     xdotool windowunmap $WINDOW_CODE
 else
+    xdotool windowmove $WINDOW_CODE $NEW_X $NEW_Y
     xdotool windowmap $WINDOW_CODE
 fi
 

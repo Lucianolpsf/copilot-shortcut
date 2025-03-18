@@ -5,8 +5,9 @@ SHORTCUT_PATH=$(INSTALL_DIR)/$(SHORTCUT_SCRIPT)
 
 # Install dependencies
 install_dependencies:
-	sudo apt update
-	sudo apt install -y wmctrl xdotool 
+	sudo chmod 777 install-dependencies.sh
+	clear
+	bash ./install-dependencies.sh
 
 # Move the shortcut script to /opt
 install_shortcut:
