@@ -58,5 +58,6 @@ if wmctrl -l | grep -i "$WINDOW_NAME" > /dev/null 2>&1; then
 else
     xdotool windowmove $WINDOW_CODE $NEW_X $NEW_Y
     xdotool windowmap $WINDOW_CODE
+    xdotool windowactivate $WINDOW_CODE
 fi
 
