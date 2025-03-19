@@ -46,9 +46,14 @@ done
 NEW_PATH="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom$INDEX/"
 
 if [[ -z "$KEY_PATH" ]]; then
-    UPDATED_BINDINGS="['$NEW_PATH']"
+    UPDATED_BINDINGS="'$NEW_PATH'"
 else
-    UPDATED_BINDINGS="[$KEY_PATH, '$NEW_PATH']"
+    UPDATED_BINDINGS="[$KEY_PATH, $NEW_PATH]"
+    
+    if [[ $(echo "$UPDATE_BINDINGS" | grep -o ',' | wc -l) -eq 0 ]]; then
+  
+        UPDATED_BINDINGS="['$NEW_PATH']"
+    fi
 fi
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "$UPDATED_BINDINGS"
@@ -57,5 +62,5 @@ gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$NE
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$NEW_PATH command "$SHORTCUT_COMMAND"
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$NEW_PATH binding "$NEW_BINDING"
 
-echo "The shortcut '$SHORTCUT_NAME' ahas been added successfully."
+echo "The shortcut '$SHORTCUT_NAME' has been added successfully."
 echo "Press  $NEW_BINDING to activate the shortcut."

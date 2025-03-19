@@ -47,7 +47,7 @@ NEW_HEIGHT=600
 xdotool windowsize "$WINDOW_CODE" $NEW_WIDTH $NEW_HEIGHT
 
 NEW_X=$(( ($SCREEN_WIDTH - $NEW_WIDTH) / 2 ))
-NEW_Y=$(( $SCREEN_HEIGHT - $NEW_HEIGHT - $DOCK_HEIGHT - 20))
+NEW_Y=$(( $SCREEN_HEIGHT - $NEW_HEIGHT - $DOCK_HEIGHT - 10))
 
 
 if wmctrl -l | grep -i "$WINDOW_NAME" > /dev/null 2>&1; then
