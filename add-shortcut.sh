@@ -56,8 +56,8 @@ else
     fi
 fi
 
+gsettings set org.gnome.desktop.wm.keybindings activate-window-menu "[]"
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "$UPDATED_BINDINGS"
-
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$NEW_PATH name "$SHORTCUT_NAME"
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$NEW_PATH command "$SHORTCUT_COMMAND"
 gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$NEW_PATH binding "$NEW_BINDING"

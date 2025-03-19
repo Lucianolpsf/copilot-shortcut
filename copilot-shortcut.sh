@@ -15,10 +15,14 @@ else
 
     for ID in $WINDOW_IDS; do
         NAME=$(xdotool getwindowname "$ID" 2>/dev/null)
-        
+
         if [[ "$NAME" == "$WINDOW_NAME_PREFIX"* ]]; then
-            WINDOW_ID="$ID"
-            break  
+            WINDOW_TYPE=$(xprop -id "$ID" | grep "_NET_WM_WINDOW_TYPE" | awk '{print $3}')
+
+            if [[ "$WINDOW_TYPE" == "_NET_WM_WINDOW_TYPE_NORMAL" ]]; then
+                    WINDOW_ID="$ID"
+                    break
+            fi
         fi
     done
 
@@ -28,8 +32,7 @@ else
     fi
 
     WINDOW_NAME=$NAME
-
-    WINDOW_CODE=$(xdotool search --name "$WINDOW_NAME")
+    WINDOW_CODE=$WINDOW_ID
 fi
 
 SCREEN_WIDTH=$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)
@@ -47,7 +50,7 @@ NEW_HEIGHT=600
 xdotool windowsize "$WINDOW_CODE" $NEW_WIDTH $NEW_HEIGHT
 
 NEW_X=$(( ($SCREEN_WIDTH - $NEW_WIDTH) / 2 ))
-NEW_Y=$(( $SCREEN_HEIGHT - $NEW_HEIGHT - $DOCK_HEIGHT - 10))
+NEW_Y=$(( $SCREEN_HEIGHT - $NEW_HEIGHT - $DOCK_HEIGHT - 12))
 
 
 if wmctrl -l | grep -i "$WINDOW_NAME" > /dev/null 2>&1; then

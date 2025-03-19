@@ -36,7 +36,7 @@ done
 NEW_LIST="[$(IFS=,; echo "${NEW_CAMINHOS[*]}")]"
 
 gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "$NEW_LIST"
-
+gsettings reset org.gnome.desktop.wm.keybindings activate-window-menu
 
 
 echo -e "✅ \e[1mAll related files have been removed.\e[0m"
