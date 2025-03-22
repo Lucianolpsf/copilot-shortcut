@@ -35,24 +35,36 @@ else
     WINDOW_CODE=$WINDOW_ID
 fi
 
-SCREEN_WIDTH=$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f1)
-SCREEN_HEIGHT=$(xdpyinfo | awk '/dimensions/{print $2}' | cut -d 'x' -f2)
+PRIMARY_MONITOR=$(xrandr --query | grep " primary" | awk '{print $1}')
+MONITOR_GEOMETRY=$(xrandr --query | grep "^$PRIMARY_MONITOR" | awk '{print $4}')
+MONITOR_X=$(echo $MONITOR_GEOMETRY | cut -d'+' -f2)
+MONITOR_Y=$(echo $MONITOR_GEOMETRY | cut -d'+' -f3)
+MONITOR_WIDTH=$(echo $MONITOR_GEOMETRY | cut -d'x' -f1)
+MONITOR_HEIGHT=$(echo $MONITOR_GEOMETRY | cut -d'x' -f2 | cut -d'+' -f1)
 
-DOCK_HEIGHT=$(xprop "-root" _NET_WORKAREA | awk '{print $4}' | sed 's/,//g')
-WORKAREA_HEIGHT=$(( $SCREEN_HEIGHT - $DOCK_HEIGHT ))
+NEW_WIDTH=700
+NEW_HEIGHT=800
 
-WINDOW_GEOMETRY=$(xdotool getwindowgeometry --shell "$WINDOW_CODE")
-# WINDOW_WIDTH=$(echo "$WINDOW_GEOMETRY" | grep WIDTH | cut -d '=' -f2)
-# WINDOW_HEIGHT=$(echo "$WINDOW_GEOMETRY" | grep HEIGHT | cut -d '=' -f2)
+if [ $MONITOR_HEIGHT -lt $NEW_HEIGHT || $MONITOR_HEIGHT -lt 901 ]; then
+    NEW_HEIGHT=600
+fi
 
-NEW_WIDTH=800
-NEW_HEIGHT=600
+WORKAREA=$(xprop -root _NET_WORKAREA | awk -F' = ' '{print $2}' | tr -d ' ')
+WORKAREA_X=$(echo $WORKAREA | cut -d',' -f1)
+WORKAREA_Y=$(echo $WORKAREA | cut -d',' -f2)
+WORKAREA_WIDTH=$(echo $WORKAREA | cut -d',' -f3)
+WORKAREA_HEIGHT=$(echo $WORKAREA | cut -d',' -f4)
+
+DOCK_HEIGHT=$(( $MONITOR_HEIGHT - $WORKAREA_HEIGHT ))
+
+NEW_X=$(( $MONITOR_X + ( $MONITOR_WIDTH - $NEW_WIDTH) / 2 ))
+NEW_Y=$(( $MONITOR_Y + $MONITOR_HEIGHT - $NEW_HEIGHT - $DOCK_HEIGHT + 22))
+
 xdotool windowsize "$WINDOW_CODE" $NEW_WIDTH $NEW_HEIGHT
+xdotool windowmove "$WINDOW_CODE" $NEW_X $NEW_Y
 
-NEW_X=$(( ($SCREEN_WIDTH - $NEW_WIDTH) / 2 ))
-NEW_Y=$(( $SCREEN_HEIGHT - $NEW_HEIGHT - $DOCK_HEIGHT - 12))
-
-
+echo "Window Name: $WINDOW_NAME"
+echo "Window Code: $WINDOW_CODE"
 if wmctrl -l | grep -i "$WINDOW_NAME" > /dev/null 2>&1; then
     xdotool windowunmap $WINDOW_CODE
 else
@@ -60,4 +72,3 @@ else
     xdotool windowmap $WINDOW_CODE
     xdotool windowactivate $WINDOW_CODE
 fi
-
